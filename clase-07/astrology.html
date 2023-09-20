@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css" />
+        <title>DNOO37</title>
+    </head>
+    <body>
+        <nav>
+            <h1><a href="index.html">Trinidad Rodríguez</a></h1>
+            <select onchange="location = this.value;">
+                <option value="index.html">INDEX</option>
+                <option value="astrology.html" selected>ASTROLOGY</option>
+                <option value="astronomy.html">ASTRONOMY</option>
+                <option value="earthquakes.html">EARTHQUAKES</option>
+                <option value="weather.html">WEATHER</option>
+            </select>
+        </nav>
+        <header style="display: none;">
+            <div>Marque uno:</div>
+            <div><input type="radio" name="selecciona" value="todos" checked />Todos</div>
+            <div><input type="radio" name="selecciona" value="agua" />Agua</div>
+            <div><input type="radio" name="selecciona" value="aire" />Aire</div>
+            <div><input type="radio" name="selecciona" value="fuego" />Fuego</div>
+            <div><input type="radio" name="selecciona" value="tierra" />Tierra</div>
+        </header>
+        <aside></aside>
+        <main></main>
+        <script>
+            const alternativas = document.querySelector("header");
+            const detalles = document.querySelector("aside");
+            const respuesta = document.querySelector("main");
+            var datos;
+            async function estudiantes() {
+                const data = await fetch("https://raw.githubusercontent.com/profesorfaco/dno037-2023-2/main/clase-07/_curso.json");
+                datos = await data.json();
+                alternativas.removeAttribute("style");
+                datos.forEach((x) => {
+                    if(x.zodiaco.signo !== ""){
+                        respuesta.innerHTML += `<article><div><img src="${x.avatar}"></div><div><p><a href="integrante.html?lista=${x.lista}">${x.nombres.split(" ")[0]} ${x.apellidos.split(" ")[0]}</a></p><p>${
+                            x.zodiaco.signo
+                        }</p></div></article>`;
+                    }
+                });
+            }
+            estudiantes().catch((error) => console.error(error));
+
+            function compatibilidad(valor) {
+                respuesta.innerHTML = ``;
+                detalles.innerHTML = ``;
+
+                //Lo que sigue lo saqué de https://www.clara.es/
+
+                if (valor == "fuego") {
+                    about =
+                        "<em>Los signos de fuego se caracterizan por su instinto rápido y asertivo, el cual a veces puede manifestarse en forma de visiones proféticas. Su confianza e impulsividad los lleva constantemente a la acción, convirtiéndose así en los signos más inspiradores del zodiaco. Hay algo en su espíritu positivo, en su entusiasmo y en su disfrute por la vida que los hace sumamente cautivantes, y sin duda algo seductor en la pasión que siempre traen consigo. No es casual que a menudo sean, como el sol en el sistema solar, la estrella que más brilla.";
+                } else if (valor == "agua") {
+                    about =
+                        "<em>Los signos de agua perciben la realidad desde un plano sutil a través de sus sentimientos, y actúan con suma sensibilidad (esto es una advertencia) y empatía. Su punto de vista es subjetivo, dado que observan la vida a través del agua. Las emociones gobiernan a las personas. Ellos conectan fácilmente con los sentimientos propios, del prójimo y colectivos, y muchas veces encuentran dificultad para establecer límites vinculares. Asociada a las copas en el Tarot, el agua en estado líquido cambia de forma según el recipiente, lo que hace a los signos de este elemento muy adaptables.";
+                } else if (valor == "aire") {
+                    about =
+                        "<em>El aire, representa a los mejores signos del zodiaco, con la mente racional, la inteligencia y la comunicación. Los signos de aire vuelan en lo alto, donde brilla el intelecto, a kilómetros de las profundidades en las que fluyen las emociones. Su transparencia y falta de forma hace a las personas de este elemento sumamente versátiles. Entusiasma a las personas regidas por el mismo a conversar, comunicarse y establecer conexiones a través del plano invisible de las ideas. Es un elemento que todo lo alcanza, todo lo conecta, y no por nada las personas de aire se caracterizan por su curiosidad, sus conocimientos dispersos por diversos campos, y por sus cualidades sociales.";
+                } else if (valor == "tierra"){
+                    about =
+                        "<em>Como lo sugiere este elemento, estos signos tienen los pies en la tierra, están enraizados al presente y en sintonía con el reino físico a través de los cinco sentidos. Su firmeza sobre el suelo y su conexión con el chakra raíz los hace estables y consecuentemente fiables. Ellos cultivan la paciencia y labran los procesos cautelosa y constantemente. Caminan paso por paso y siempre en dirección al norte. Debido a esto, y a su distinguida practicidad, las personas de este elemento logran bajar sus ambiciones a tierra y hacen florecer la abundancia en sus vidas.";
+                } else {
+                    about = "Diseño y nuevos medios."
+                }
+
+                detalles.innerHTML += `<div><p>${about}</p></div>`;
+
+                datos.forEach((x) => {
+                    if (valor == x.zodiaco.elemento) {
+                        respuesta.innerHTML += `<article><div><img src="${x.avatar}"></div><div><p><a href="integrante.html?lista=${x.lista}">${x.nombres.split(" ")[0]} ${x.apellidos.split(" ")[0]}</a></p><p>${
+                            x.zodiaco.signo
+                        }</p></div></article>`;
+                    }
+                });
+            }
+
+            const seleccionado = document.querySelectorAll('input[name="selecciona"]');
+
+            seleccionado.forEach((i) => {
+                i.addEventListener("change", function () {
+                    var valor = this.value;
+                    if (valor !== "todos"){
+                        console.log(valor);
+                        compatibilidad(valor);
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

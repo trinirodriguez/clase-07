@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css" />
+        <title>DNOO37</title>
+    </head>
+    <body>
+        <nav>
+            <h1><a href="index.html">Trinidad Rodríguez</a></h1>
+            <select onchange="location = this.value;">
+                <option value="index.html" selected>INDEX</option>
+                <option value="astrology.html">ASTROLOGY</option>
+                <option value="astronomy.html">ASTRONOMY</option>
+                <option value="earthquakes.html">EARTHQUAKES</option>
+                <option value="weather.html">WEATHER</option>
+            </select>
+        </nav>
+        <section style="min-height: 80vh">
+            <blockquote><div id="loader"></div></blockquote>
+        </section>
+        <footer>
+            <a href="https://github.com/profesorfaco/dno037-2023-2">Diseño y nuevos medios</a>
+            <a href="https://github.com/profesorfaco/dno037-2023-2/tree/main/clase-07">20 de septiembre, 2023</a>
+        </footer>
+        <script>
+            async function estudiantes(x){
+                const data = await fetch("https://raw.githubusercontent.com/profesorfaco/dno037-2023-2/main/clase-07/_curso.json");
+                const datos = await data.json();
+                document.querySelector("blockquote").innerHTML = `${datos[x].motivo}`;
+            }
+              estudiantes(14).catch((error) => console.error(error));
+        </script>
+    </body>
+</html>
